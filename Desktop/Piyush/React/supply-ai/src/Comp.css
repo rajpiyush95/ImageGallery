@@ -1,0 +1,41 @@
+.photos {
+  display: flex; 
+  flex-wrap: wrap;
+}
+
+.photo {
+  height: 40vh;
+  flex-grow: 1;
+  margin: 5px;
+}
+
+.image {
+  max-height: 100%;
+  min-width: 100%;
+  object-fit: cover;
+  vertical-align: bottom;
+}
+
+.photo:last-child {
+  flex-grow: 10;
+}
+
+#main{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 5px;
+  background: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
