@@ -105,7 +105,10 @@ class App extends React.Component {
   render() {
     return (
       <div id = "main">
-        <input placeholder = "Type To Search Image" onChange={() => this.fetchPhotosInstantly(1)} type="text" id="input" />
+        <div id = "justInput">
+            <input placeholder = "Type To Search Image" onChange={() => this.fetchPhotosInstantly(1)} type="text" id="input" />
+        </div>
+        
         {this.state.pictures.length > 0 ? (
           <Comp images={this.state.pictures} />
         ) : null}
