@@ -1,12 +1,15 @@
 import React from "react";
 
 import Comp from "./Comp";
-import "./Comp.css";
+
+// constants in API call
 
 const URL =
   "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=";
 const SECRET = "4d89dcfda021622b427cba06e5e79578";
-const QUERY = "&per_page=20&format=json&nojsoncallback=1";
+const QUERY = "&per_page=10&format=json&nojsoncallback=1";
+
+// intialize intial state with urls in pictures array
 
 class App extends React.Component {
   constructor(props) {
@@ -15,32 +18,29 @@ class App extends React.Component {
       pictures: []
     };
 
-    //this.fetchPhotos = this.fetchPhotos.bind(this);
+    
+    this.fetchPhotosInstantly = this.fetchPhotosInstantly.bind(this);
     this.createImageArray = this.createImageArray.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.fetchPhotosInstantly = this.fetchPhotosInstantly.bind(this);
+    this.fetchPhotosOnScroll = this.fetchPhotosOnScroll.bind(this);
 
     this.currOffsetHeight = 0;
     this.page = 1;
     this.pictures = [];
   }
 
+  // this function takes care of responsive scrolling
+
   handleScroll() {
-    //console.log("scrolled")
-    //window.scrollY 
     const offsetHeight = document.body.offsetHeight;
-    console.log(window.innerHeight)
-    console.log(document.documentElement.scrollTop)
-    console.log(offsetHeight)
+    //console.log(window.innerHeight)
+    //console.log(document.documentElement.scrollTop)
+    //console.log(offsetHeight)
     
-    if (
-      window.innerHeight + document.documentElement.scrollTop >= offsetHeight &&
-      offsetHeight > this.currOffsetHeight
-    ) {
+    if (window.innerHeight + document.documentElement.scrollTop>= offsetHeight) {
       this.currOffsetHeight = offsetHeight;
       this.page = this.page + 1;
-      console.log("scrolled")
-      this.fetchPhotosInstantly(this.page);
+      this.fetchPhotosOnScroll(this.page);
     }
   }
 
@@ -66,32 +66,32 @@ class App extends React.Component {
     this.setState({ pictures: this.pictures });
   }
 
-  // fetchPhotos(page = 1, clear) {
-  //   const input = document.getElementById("input");
-  //   if (clear) {
-  //     this.pictures = [];
-  //     this.page = 1;
-  //     this.currOffsetHeight = 0;
-  //   }
-  //   if(input.value.length !== 0)
-  //   {
-  //     fetch(URL + SECRET + "&tags=" + input.value + "&page=" + page + QUERY)
-  //     .then(response => response.json())
-  //     .then(j => this.createImageArray(j));
-  //   }
-    
-  // }
 
+  // this function is used to call fetch data from next page on scrolling
+  fetchPhotosOnScroll(page) {
+    const input = document.getElementById("input");
+    fetch(URL + SECRET + "&tags=" + input.value + "&page=" + page + QUERY)
+      .then(response => response.json())
+      .then(j => this.createImageArray(j));
+
+  }
+
+
+  // this function call the api as per the changing input
   fetchPhotosInstantly(page = 1) {
     const input = document.getElementById("input");
 
     if(input.value.length === 0)
     {
-      this.setState({ pictures: [] });
+      this.setState(
+        {
+          pictures:[]
+        }
+      )
     }
-    
     if(input.value.length !== 0)
     {
+      
       this.setState({ pictures: [] });
       this.pictures = []
       fetch(URL + SECRET + "&tags=" + input.value + "&page=" + page + QUERY)
@@ -99,14 +99,13 @@ class App extends React.Component {
       .then(j => this.createImageArray(j));
     }
     
+    
   }
 
   render() {
     return (
       <div id = "main">
-        
-        <input placeholder = "Type to Search Image" onChange={() => this.fetchPhotosInstantly(1)} type="text" id="input" />
-        {/* <button id = "getData" onClick={() => this.fetchPhotos(1, true)}> Search </button> */}
+        <input placeholder = "Type To Search Image" onChange={() => this.fetchPhotosInstantly(1)} type="text" id="input" />
         {this.state.pictures.length > 0 ? (
           <Comp images={this.state.pictures} />
         ) : null}

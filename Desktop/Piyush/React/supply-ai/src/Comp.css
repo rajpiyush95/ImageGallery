@@ -20,6 +20,10 @@
   flex-grow: 10;
 }
 
+input{
+  margin: 20px;
+}
+
 #main{
   display: flex;
   justify-content: center;
@@ -27,15 +31,4 @@
   margin: 5px;
   background: black;
 }
-
-
-
-
-
-
-
-
-
-
-
 

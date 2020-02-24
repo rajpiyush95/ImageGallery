@@ -3,6 +3,7 @@ import "./Comp.css";
 
 
 
+
 const Comp = ({ images }) => {
   return (
     <div className="photos">
@@ -10,6 +11,7 @@ const Comp = ({ images }) => {
         return (
           <div key={image + index} className="photo">
             <img className="image" src={image} alt={"img"} />
+            
             
           </div>
         );
